@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GeoSpatial Perú | Plataforma de Análisis Geoespacial</title>
+
+    <meta name="description"
+        content="GeoSpatial Perú - Plataforma personal para la visualización y consulta de análisis geoespaciales del Perú mediante imágenes Landsat.">
+
+    <meta name="author" content="Ales Ahua Mol">
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Boxicons -->
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Leaflet -->
+
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="css/style2.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================================
+                            LOADER
+    =========================================================== -->
+
+    <div id="loader">
+
+        <div class="loader-content">
+
+            <img src="assets/logo.png" alt="GeoSpatial Perú">
+
+            <h2>GeoSpatial Perú</h2>
+
+            <p>Cargando plataforma...</p>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================================
+                            HEADER
+    =========================================================== -->
+
+    <header>
+
+        <div class="logo">
+
+            <img src="assets/logo.png" alt="logo">
+
+            <div>
+
+                <h2>GeoSpatial Perú</h2>
+
+                <span>Personal GIS Platform</span>
+
+            </div>
+
+        </div>
+
+        <nav>
+
+            <ul>
+
+                <li><a href="#">Inicio</a></li>
+
+                <li><a href="#">GeoVisor</a></li>
+
+                <li><a href="#">Metodología</a></li>
+
+                <li><a href="#">Estadísticas</a></li>
+
+                <li><a href="#">Descargas</a></li>
+
+                <li><a href="#">Acerca de</a></li>
+
+                <li><a href="#">Contacto</a></li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <!-- ==========================================================
+                            HERO
+    =========================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-text">
+
+            <h1>GeoSpatial Perú</h1>
+
+            <h3>
+
+                Plataforma personal de análisis geoespacial basada en imágenes
+                Landsat para el territorio peruano (1985–2026)
+
+            </h3>
+
+            <p>
+
+                Consulta resultados previamente procesados mediante Google Earth
+                Engine y ArcGIS Desktop para diferentes índices espectrales,
+                permitiendo visualizar mapas, estadísticas y descargar los datos
+                geoespaciales.
+
+            </p>
+
+        </div>
+
+        <div class="hero-cards">
+
+            <div class="card">
+
+                <i class='bx bx-map'></i>
+
+                <h2>24</h2>
+
+                <p>Departamentos</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class='bx bx-buildings'></i>
+
+                <h2>196</h2>
+
+                <p>Provincias</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class='bx bx-location-plus'></i>
+
+                <h2>1891</h2>
+
+                <p>Distritos</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class='bx bx-calendar'></i>
+
+                <h2>1985 - 2026</h2>
+
+                <p>Cobertura temporal</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ==========================================================
+                        CONTENEDOR PRINCIPAL
+    =========================================================== -->
+
+    <main>
+
+        <!-- ==========================================
+                    SIDEBAR
+        =========================================== -->
+
+        <aside class="sidebar">
+
+            <h2>
+
+                <i class='bx bx-slider-alt'></i>
+
+                Panel de Consulta
+
+            </h2>
+
+            <!-- UBICACIÓN -->
+
+            <div class="panel">
+
+                <h3>Ubicación</h3>
+
+                <label>Departamento</label>
+
+                <select id="departamento">
+
+                    <option>Seleccione...</option>
+
+                </select>
+
+                <label>Provincia</label>
+
+                <select id="provincia">
+
+                    <option>Seleccione...</option>
+
+                </select>
+
+                <label>Distrito</label>
+
+                <select id="distrito">
+
+                    <option>Seleccione...</option>
+
+                </select>
+
+            </div>
+
+            <!-- TEMPORAL -->
+
+            <div class="panel">
+
+                <h3>Periodo</h3>
+
+                <label>Año Inicial</label>
+
+                <select id="anioInicio"></select>
+
+                <label>Año Final</label>
+
+                <select id="anioFinal"></select>
+
+            </div>
+
+            <!-- SATELITE -->
+
+            <div class="panel">
+
+                <h3>Satélite</h3>
+
+                <select id="satelite">
+
+                    <option>Landsat 5</option>
+
+                    <option>Landsat 8</option>
+
+                    <option>Landsat 9</option>
+
+                </select>
+
+            </div>
+
+            <!-- OBJETIVO -->
+
+            <div class="panel">
+
+                <h3>Objetivo del estudio</h3>
+
+                <select id="objetivo">
+
+                    <option>Vegetación</option>
+
+                    <option>Agua</option>
+
+                    <option>Área Glacial</option>
+
+                    <option>Temperatura</option>
+
+                    <option>Suelo</option>
+
+                    <option>Área Urbana</option>
+
+                </select>
+
+            </div>
+
+            <!-- INDICE -->
+
+            <div class="panel">
+
+                <h3>Índice Espectral</h3>
+
+                <select id="indice">
+
+                    <option>NDVI</option>
+
+                    <option>EVI</option>
+
+                    <option>SAVI</option>
+
+                    <option>MSAVI</option>
+
+                    <option>GNDVI</option>
+
+                    <option>NDSI</option>
+
+                    <option>NDWI</option>
+
+                    <option>MNDWI</option>
+
+                    <option>BI</option>
+
+                    <option>BSI</option>
+
+                    <option>NDBI</option>
+
+                    <option>LST</option>
+
+                </select>
+
+            </div>
+
+            <div class="panel botones">
+
+                <button id="consultar">
+
+                    <i class='bx bx-search'></i>
+
+                    Consultar
+
+                </button>
+
+                <button id="limpiar">
+
+                    <i class='bx bx-reset'></i>
+
+                    Limpiar
+
+                </button>
+
+            </div>
+
+        </aside>
+                <!--==========================================
+                    CONTENEDOR DEL MAPA
+        ===========================================-->
+
+        <section class="map-section">
+
+            <!-- Barra superior del mapa -->
+
+            <div class="map-toolbar">
+
+                <div class="toolbar-left">
+
+                    <h2>
+
+                        <i class='bx bx-map-alt'></i>
+
+                        Visualizador Geoespacial
+
+                    </h2>
+
+                </div>
+
+                <div class="toolbar-right">
+
+                    <button>
+
+                        <i class='bx bx-layer'></i>
+
+                        Capas
+
+                    </button>
+
+                    <button>
+
+                        <i class='bx bx-current-location'></i>
+
+                        Mi ubicación
+
+                    </button>
+
+                    <button>
+
+                        <i class='bx bx-fullscreen'></i>
+
+                        Pantalla completa
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Mapa -->
+
+            <div id="map"></div>
+
+            <!-- Leyenda -->
+
+            <div class="legend">
+
+                <h3>
+
+                    <i class='bx bx-palette'></i>
+
+                    Leyenda
+
+                </h3>
+
+                <div class="legend-item">
+
+                    <span class="color ndvi1"></span>
+
+                    Agua
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span class="color ndvi2"></span>
+
+                    Vegetación Baja
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span class="color ndvi3"></span>
+
+                    Vegetación Media
+
+                </div>
+
+                <div class="legend-item">
+
+                    <span class="color ndvi4"></span>
+
+                    Vegetación Alta
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!--==========================================
+                PANEL DERECHO
+        ===========================================-->
+
+        <aside class="info-panel">
+
+            <h2>
+
+                <i class='bx bx-info-circle'></i>
+
+                Información del Análisis
+
+            </h2>
+
+            <div class="info-card">
+
+                <h3>Índice seleccionado</h3>
+
+                <p id="indiceNombre">
+
+                    NDVI
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Descripción</h3>
+
+                <p>
+
+                    Índice utilizado para evaluar el vigor y densidad de la
+                    vegetación mediante información espectral.
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Satélite</h3>
+
+                <p id="sensor">
+
+                    Landsat 5
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Año</h3>
+
+                <p id="anio">
+
+                    1985
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Resolución</h3>
+
+                <p>
+
+                    30 metros
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Área Analizada</h3>
+
+                <p>
+
+                    0 km²
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Fuente</h3>
+
+                <p>
+
+                    Google Earth Engine +
+                    ArcGIS Desktop
+
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Estado</h3>
+
+                <span class="status">
+
+                    Datos disponibles
+
+                </span>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!--==========================================
+                PANEL DE RESULTADOS
+    ===========================================-->
+
+    <section class="results">
+
+        <div class="section-title">
+
+            <h2>
+
+                <i class='bx bx-bar-chart-alt-2'></i>
+
+                Resultados
+
+            </h2>
+
+        </div>
+
+        <div class="cards-results">
+
+            <div class="result-card">
+
+                <h3>Área Total</h3>
+
+                <h1>0 km²</h1>
+
+            </div>
+
+            <div class="result-card">
+
+                <h3>Valor Promedio</h3>
+
+                <h1>0.00</h1>
+
+            </div>
+
+            <div class="result-card">
+
+                <h3>Valor Máximo</h3>
+
+                <h1>0.00</h1>
+
+            </div>
+
+            <div class="result-card">
+
+                <h3>Valor Mínimo</h3>
+
+                <h1>0.00</h1>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--==========================================
+                TABLA
+    ===========================================-->
+
+    <section class="table-section">
+
+        <div class="section-title">
+
+            <h2>
+
+                <i class='bx bx-table'></i>
+
+                Tabla de Resultados
+
+            </h2>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Departamento</th>
+
+                    <th>Provincia</th>
+
+                    <th>Distrito</th>
+
+                    <th>Índice</th>
+
+                    <th>Año</th>
+
+                    <th>Satélite</th>
+
+                    <th>Área</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tablaResultados">
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <!--==========================================
+                DESCARGAS
+    ===========================================-->
+
+    <section class="downloads">
+
+        <div class="section-title">
+
+            <h2>
+
+                <i class='bx bx-download'></i>
+
+                Descargas
+
+            </h2>
+
+        </div>
+
+        <div class="download-grid">
+
+            <button>
+
+                <i class='bx bx-image'></i>
+
+                Descargar GeoTIFF
+
+            </button>
+
+            <button>
+
+                <i class='bx bx-map'></i>
+
+                Descargar SHP
+
+            </button>
+
+            <button>
+
+                <i class='bx bx-photo-album'></i>
+
+                Descargar PNG
+
+            </button>
+
+            <button>
+
+                <i class='bx bx-file'></i>
+
+                Descargar PDF
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!--==========================================
+                FOOTER
+    ===========================================-->
+
+    <footer>
+
+        <div class="footer-left">
+
+            <h2>
+
+                GeoSpatial Perú
+
+            </h2>
+
+            <p>
+
+                Plataforma personal para la consulta y visualización
+                de información geoespacial del Perú mediante imágenes
+                Landsat (1985–2026).
+
+            </p>
+
+        </div>
+
+        <div class="footer-center">
+
+            <h3>
+
+                Tecnologías
+
+            </h3>
+
+            <ul>
+
+                <li>Google Earth Engine</li>
+
+                <li>ArcGIS Desktop</li>
+
+                <li>Leaflet</li>
+
+                <li>JavaScript</li>
+
+                <li>HTML5</li>
+
+                <li>CSS3</li>
+
+            </ul>
+
+        </div>
+
+        <div class="footer-right">
+
+            <h3>
+
+                Desarrollador
+
+            </h3>
+
+            <p>
+
+                Ales Ahu Mol
+
+            </p>
+
+            <p>
+
+                GeoSpatial Perú © 2026
+
+            </p>
+
+        </div>
+
+    </footer>
+
+    <!--==========================================
+                JAVASCRIPT
+    ===========================================-->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script src="js/ubigeo.js"></script> 
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
